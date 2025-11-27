@@ -8,23 +8,28 @@ const dummyRooms = [
   { id: "3", name: "初心者歓迎！" },
 ];
 
-const RoomLobby: React.FC = () => {
+interface RoomLobbyProps {
+  onJoinRoom: (roomId: string, isHost: boolean) => void;
+}
+
+const RoomLobby: React.FC<RoomLobbyProps> = ({ onJoinRoom }) => {
   const [roomName, setRoomName] = useState("");
-  const [rooms, setRooms] = useState(dummyRooms); // ダミーデータをstateで管理
+  const [rooms, setRooms] = useState(dummyRooms);
 
   const handleCreateRoom = () => {
     if (roomName.trim()) {
-      alert(`部屋 "${roomName}" を作成しました！ (実際にはサーバーと連携します)`);
-      // ダミーで部屋リストに追加
-      setRooms([...rooms, { id: Date.now().toString(), name: roomName.trim() }]);
+      const newRoomId = Date.now().toString();
+      alert(`部屋 "${roomName}" を作成しました！`);
+      setRooms([...rooms, { id: newRoomId, name: roomName.trim() }]);
       setRoomName("");
+      onJoinRoom(newRoomId, true); // ホストとして部屋に参加
     } else {
       alert("部屋名を入力してください。");
     }
   };
 
   const handleJoinRoom = (roomId: string) => {
-    alert(`部屋ID: ${roomId} に参加します！ (実際には画面遷移します)`);
+    onJoinRoom(roomId, false); // 参加者として部屋に参加
   };
 
   return (
