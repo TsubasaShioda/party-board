@@ -15,13 +15,15 @@ const dummyGames = [
 interface GameRoomProps {
   roomId: string;
   isHost: boolean; // ホストかどうかを判定
+  onStartGame: (gameId: string) => void; // ゲーム開始時に呼ばれるコールバック
 }
 
-const GameRoom: React.FC<GameRoomProps> = ({ roomId, isHost }) => {
+const GameRoom: React.FC<GameRoomProps> = ({ roomId, isHost, onStartGame }) => {
   const [selectedGame, setSelectedGame] = useState(dummyGames[0].id);
 
   const handleStartGame = () => {
-    alert(`ゲーム "${dummyGames.find(g => g.id === selectedGame)?.name}" を開始します！ (実際には画面遷移)`);
+    // alert(`ゲーム "${dummyGames.find(g => g.id === selectedGame)?.name}" を開始します！ (実際には画面遷移)`);
+    onStartGame(selectedGame); // App.tsx に選択されたgameIdを渡す
   };
 
   return (
